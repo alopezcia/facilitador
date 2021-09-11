@@ -1,0 +1,84 @@
+<html>
+<head>
+  <script type="text/javascript">
+    function convert()
+    {
+	  var text = document.getElementById("url").value;
+	  var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+	  var text1=text.replace(exp, "<tr><td><a href='$1'>$1</a></td></tr>");
+	  var exp2 =/(^|[^\/])(www\.[\S]+(\b|$))/gim;
+	  var text2="<table id=\"table\">".concat(text1.replace(exp2, '$1<a target="_blank" href="http://$2">$2</a>'));
+	  var text3=text2.concat("</table>");
+	  //document.getElementById("converted_url").innerHTML=text1.replace(exp2, '$1<a target="_blank" href="http://$2">$2</a>');
+	  document.getElementById("converted_url").innerHTML=text3;
+    }
+  </script>
+  
+  <script type="text/javascript">
+  
+  function sleep(milliseconds) {
+		var start = new Date().getTime();
+		for (var i = 0; i < 1e7; i++) {
+			if ((new Date().getTime() - start) > milliseconds) {
+				break;
+			}
+		}
+  }
+
+	/**
+ 	* Returns a random number between min (inclusive) and max (exclusive)
+ 	*/
+	function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+	}
+
+	/**
+ 	* Returns a random integer between min (inclusive) and max (inclusive).
+ 	* The value is no lower than min (or the next integer greater than min
+ 	* if min isn't an integer) and no greater than max (or the next integer
+ 	* lower than max if max isn't an integer).
+ 	* Using Math.round() will give you a non-uniform distribution!
+ 	*/
+	function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+  function shoot()
+	{
+		var p = document.getElementById("converted_url");
+		var table = p.childNodes[0];
+		var celdas="";
+		var enlace="";
+		var a="";
+		var rn=0;
+		for( var i=0; i < table.rows.length; i++)
+		{
+			celdas = table.rows[i].getElementsByTagName('td');
+			enlace=celdas[0];
+			a = enlace.childNodes[0];
+			a.click();
+			rn = getRandomInt(6, 9)*1000;
+//			console.log(rn);
+			sleep(rn);
+		}
+	}
+  </script>
+  
+</head>
+
+<body>
+  
+  <h1>Facilitador de descargas m3u8</h1>
+  <h2>C:\Util\ffmpeg-N-103457-g9abf0e0419-win64-gpl\bin\ffmpeg.exe -i in.m3u8 -acodec copy -vcodec copy out.mp4<h2>
+  <h2>C:\Util\ffmpeg-N-103457-g9abf0e0419-win64-gpl\bin\ffmpeg.exe -i in.tss out.ass<h2>
+  <h2>C:\Util\ffmpeg-N-103457-g9abf0e0419-win64-gpl\bin\ffmpeg.exe -i in.mp4 -vf ass=in.ass out.mp4<h2>
+  <textarea id="url" Placeholder="Pega aqui tus URL" rows="10" cols="20">
+  </textarea>
+  <input type="button" value="Convertir" onclick="convert();">
+  <input type="button" value="Disparar" onclick="shoot();">
+  <p id="converted_url"></p>
+
+</body>
+</html>
